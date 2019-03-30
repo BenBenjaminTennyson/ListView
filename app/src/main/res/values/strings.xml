@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">ListView</string>
+
+    <string-array name="sign">
+        <item>Sign</item>
+        <item>Work</item>
+        <item>Other</item>
+        <item>Home</item>
+    </string-array>
+
+    <string-array name="worker">
+        <item>Worker</item>
+        <item>Ja</item>
+        <item>Kong</item>
+        <item>Arm</item>
+    </string-array>
+
+</resources>

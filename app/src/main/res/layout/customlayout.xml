@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="30dp"
+        tools:srcCompat="@tools:sample/avatars[2]" />
+
+    <TextView
+        android:id="@+id/addressLable"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_marginLeft="95dp"
+        android:layout_marginTop="10dp"
+
+        android:text="ที่อยู่:"
+        tools:layout_editor_absoluteX="115dp"
+        tools:layout_editor_absoluteY="33dp" />
+
+    <TextView
+        android:id="@+id/CreatorLable"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_marginLeft="95dp"
+        android:layout_alignBottom="@+id/imageView"
+
+        android:text="ทำโดย:"
+        tools:layout_editor_absoluteX="115dp"
+        tools:layout_editor_absoluteY="84dp" />
+
+    <TextView
+        android:id="@+id/textView_creator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="10dp"
+        tools:layout_editor_absoluteX="174dp"
+        tools:layout_editor_absoluteY="84dp" />
+
+        <!--android:layout_alignRight="@+id/CreatorLable"-->
+
+    <TextView
+        android:id="@+id/textView_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:layout_alignTop="@+id/CreatorLable"
+        tools:layout_editor_absoluteX="174dp"
+        tools:layout_editor_absoluteY="33dp" />
+
+</RelativeLayout>
