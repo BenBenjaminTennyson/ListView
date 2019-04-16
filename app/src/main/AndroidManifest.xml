@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewRecordActivity"></activity>
-        <activity android:name=".PopUpActivity" />
+        <activity android:name=".PopUpConfirmActivity"></activity>
+        <activity android:name=".DetailRecordActivity" />
+        <activity android:name=".PopUpMenuActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
