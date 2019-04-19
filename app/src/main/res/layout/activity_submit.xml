@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SubmitActivity">
+
+    <ImageView
+        android:id="@+id/choosedPhoto"
+        android:layout_width="250dp"
+        android:layout_height="335dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="95dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="?android:attr/panelBackground"
+        tools:layout_editor_absoluteY="52dp" />
+
+    <Button
+        android:id="@+id/btn_choose_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="195dp"
+        android:text="Choose Photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="426dp" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/choosedPhoto"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="83dp"
+        android:text="SUBMIT"
+        tools:layout_editor_absoluteX="81dp"
+        tools:layout_editor_absoluteY="620dp" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/choosedPhoto"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="83dp"
+        android:text="cancel"
+        tools:layout_editor_absoluteX="243dp"
+        tools:layout_editor_absoluteY="620dp" />
+</RelativeLayout>

@@ -15,7 +15,7 @@ public class PopUpMenuActivity extends Activity {
 
     private Intent getIntent;
 
-    private final static int REQUEST_EDIT = 1;
+    private final static int REQUEST_EDIT = 1, REQUEST_SUBMIT = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,15 @@ public class PopUpMenuActivity extends Activity {
                 i.putExtra("state", getIntent.getStringExtra("edit"));
 
                 startActivityForResult(i, REQUEST_EDIT);
+            }
+        });
+
+        btn_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), SubmitActivity.class);
+
+                startActivityForResult(i, REQUEST_SUBMIT);
             }
         });
     }

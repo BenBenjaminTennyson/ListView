@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PopUpConfirmActivity"></activity>
+        <activity android:name=".SubmitActivity"></activity>
+        <activity android:name=".PopUpConfirmActivity" />
         <activity android:name=".DetailRecordActivity" />
         <activity android:name=".PopUpMenuActivity" />
         <activity android:name=".MainActivity">
