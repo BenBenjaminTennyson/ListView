@@ -41,9 +41,9 @@ public class ApproveActivity extends AppCompatActivity {
     private Button btn_approve, btn_reject, btn_cancle;
 
     private final int REQUEST_APPROVE = 1, REQUEST_REJECT = 2;
-    private String id;
+    private String id, status;
     private Intent i;
-    private int status, numDelete;
+    private int numDelete;
     private View convertView;
     private LayoutInflater inflater;
 
@@ -58,9 +58,8 @@ public class ApproveActivity extends AppCompatActivity {
 
         i = getIntent();
         id = i.getStringExtra("id");
-        status = i.getIntExtra("status",0);
+        status = i.getStringExtra("status");
         linearLayout = findViewById(R.id.horizontal_gallery);
-//        linearLayout.removeAllViews();
         inflater = LayoutInflater.from(this);
 
         record.child("Record").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,6 +133,8 @@ public class ApproveActivity extends AppCompatActivity {
         btn_reject =  (Button) findViewById(R.id.btn_reject);
         btn_cancle =  (Button) findViewById(R.id.btn_cancel);
 
+        setButton();
+
         btn_approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +145,8 @@ public class ApproveActivity extends AppCompatActivity {
         btn_reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rejectActivity();
+                if ("5".equals(status+"")) finish();
+                else rejectActivity();
             }
         });
 
@@ -217,5 +219,15 @@ public class ApproveActivity extends AppCompatActivity {
 
     private void closeActivity() {
         finish();
+    }
+
+    private void setButton(){
+        switch (status+"") {
+            case "5":
+                btn_approve.setVisibility(View.INVISIBLE);
+                btn_reject.setText("BACK");
+                btn_cancle.setVisibility(View.INVISIBLE);
+                break;
+        }
     }
 }

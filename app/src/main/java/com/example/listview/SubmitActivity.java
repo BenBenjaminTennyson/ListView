@@ -227,7 +227,7 @@ public class SubmitActivity extends AppCompatActivity {
                     DataObjectRecord data = snapshot.getValue(DataObjectRecord.class);
                     if(id.equals(data.getID())) {
                         DataObjectRecord dataObjectRecord = new DataObjectRecord(data.getID(),data.getEmployeeCameraID(),data.getEmployeeBuildID(), data.getAddress(),data.getDetailObject(),data.getSignID(),status + 1, data.getStartDate(), data.getFinishCameraDate(), data.getFinishBuildDate(),data.getLocation());
-                        dataObjectRecord.addAmountImage(mArrayUri.size());
+                        dataObjectRecord.addAmountImage(data.getAmountImage()+mArrayUri.size());
                         record.child("Record").child(id).setValue(dataObjectRecord);
                     }
                 }

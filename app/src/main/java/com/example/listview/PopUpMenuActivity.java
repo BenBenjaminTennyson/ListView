@@ -31,7 +31,7 @@ public class PopUpMenuActivity extends Activity {
         getIntent = getIntent();
         role = getIntent.getStringExtra("role");
         status = getIntent.getStringExtra("status");
-        int indexRole = ((role.equals("Manager")) ? 1 : 0);
+        int indexRole = ((role.equals("Manager") || "5".equals(status)) ? 1 : 0);
 
         double sWeigth = resolutions[indexRole][0];
         double sHeigth = resolutions[indexRole][1];
@@ -61,13 +61,11 @@ public class PopUpMenuActivity extends Activity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setAttributes(params);
 
-
         btn_detail.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), DetailRecordActivity.class);
-                i.putExtra("state", (isManager()) ? "edit" : "detail");
+                i.putExtra("state", (isManager() && "1".equals(status))  ? "edit" : "detail");
                 i.putExtra("id",getIntent.getStringExtra("id"));
                 startActivityForResult(i, REQUEST_EDIT);
             }
@@ -77,26 +75,27 @@ public class PopUpMenuActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), (isManager()) ? ApproveActivity.class : MapsActivity.class);
-//                Intent i = new Intent(getApplicationContext(), MapsActivity.class);
 
-//                i.putExtra("state", "photo");
                 i.putExtra("state", (isManager()) ? "approve" : "direction");
                 i.putExtra("id",getIntent.getStringExtra("id"));
                 i.putExtra("status",getIntent.getStringExtra("status"));
                 i.putExtra("location", getIntent.getStringExtra("location"));
 
-//                Log.d("ID Approve:",getIntent.getStringExtra("id"));
-//                Log.d("Status Approve:",getIntent.getStringExtra("status"));
-
                 startActivityForResult(i, (isManager()) ? REQUEST_APPROVE : -1);
-//                startActivity(i);
             }
         });
 
         btn_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(getApplicationContext(), ApproveActivity.class);
+                Intent i = new Intent(getApplicationContext(), PaiAR.class);
+                i.putExtra("id",getIntent.getStringExtra("id"));
+                i.putExtra("status",status);
+                i.putExtra("sign",getIntent.getStringExtra("sign"));
+
+                Log.d("sign Menu", getIntent.getStringExtra("sign"));
+
+                startActivity(i);
 //                startActivityForResult(i, REQUEST_APPROVE);
             }
         });

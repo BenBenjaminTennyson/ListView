@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,11 +23,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -119,21 +124,22 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!longClick && filterWorking) openMenuRecord(view, position);
-                else if (!filterWorking) {
-                    Intent i = new Intent(getApplicationContext(), DetailRecordActivity.class);
-                    i.putExtra("state", "detail");
-                    i.putExtra("id",records.get(records.indexOf(recordsShowing.get(position))).getID());
-                    i.putExtra("status",recordsShowing.get(position).getStatus()+"");
-                    startActivity(i);
-                }
+                if (!longClick) openMenuRecord(view, position);
+//                else if (!filterWorking ) {
+//                    Intent i = new Intent(getApplicationContext(), DetailRecordActivity.class);
+//                    i.putExtra("state", "detail");
+//                    i.putExtra("id",records.get(records.indexOf(recordsShowing.get(position))).getID());
+//                    i.putExtra("status",recordsShowing.get(position).getStatus()+"");
+//                    startActivity(i);
+//                }
             }
         });
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if(filterWorking) {
+                if(filterWorking || records.get(records.indexOf(recordsShowing.get(position))).getStatus() != 1) {
+                    indexSeclectRecord = records.indexOf(recordsShowing.get(position));
                     longClick = true;
                     openDeleteRecord(position);
                 }
@@ -186,14 +192,20 @@ public class MainActivity extends AppCompatActivity {
     private void openMenuRecord(View view, Integer position){
         Intent i = new Intent(MainActivity.this, PopUpMenuActivity.class);
 
-        String id = records.get(records.indexOf(recordsShowing.get(position))).getID();
-        String location = customAdapter.getRecord(position).getLocation();
+        DataObjectRecord data = customAdapter.getRecord(position);
+        String id = data.getID();
+        String location = data.getLocation();
 //        Log.d("id to submit",id);
 //        Log.d("status to submit",recordsShowing.get(position).getStatus()+"");
+        if(data.getStatus() == 5) i.putExtra("state", "detail");
         i.putExtra("id",id);
-        i.putExtra("status",recordsShowing.get(position).getStatus()+"");
+        i.putExtra("status",data.getStatus()+"");
         i.putExtra("role",role);
         i.putExtra("location",location);
+        i.putExtra("sign",data.getSignID()+"");
+
+        Log.d("sign Home" , data.getSignID()+"");
+
         indexSeclectRecord = position;
 
         startActivityForResult(i, REQUEST_EDIT);
@@ -226,30 +238,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deleteRecord(){
-//        Log.d("Delete","delete");
-//        Log.d("id delelte",selectRecordID.toString());
 
+        removeImage();
         mDBRecord.orderByChild("id").equalTo(selectRecordID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()) {
-                    String key = dataSnapshot1.getKey();
                     dataSnapshot1.getRef().removeValue();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-//        DatabaseReference removeRecord = FirebaseDatabase.getInstance().getReference("Record").child(selectRecordID);
-//        mDBRecord.child(selectRecordID).removeValue();
     }
 
     private void editRecord(Intent dataIntent) {
         listView.setAdapter(customAdapter);
         indexSeclectRecord = -1;
+    }
+
+    private void removeImage(){
+        DataObjectRecord data = records.get(indexSeclectRecord);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        for(int i = 1 ; i < 6 ; i++) {
+            for (int j = 0; j < data.getAmountImage(); j++) {
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://listview-6ed38.appspot.com/images/").child(data.getID() + "_" + i + "_" + j + ".jpg");
+                storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+            }
+        }
+        indexSeclectRecord = 1;
     }
 
     class CustomAdapter extends BaseAdapter{

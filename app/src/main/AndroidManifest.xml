@@ -7,6 +7,13 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
 
     <application
         android:allowBackup="true"
@@ -14,12 +21,15 @@
         android:label="PAI"
         android:roundIcon="@mipmap/pai_circle_icon"
         android:supportsRtl="true"
+        android:screenOrientation="locked"
         android:theme="@style/AppTheme">
         <activity android:name=".ApproveActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBMuJRAvGh0gNek6SM_LMBh-i2TsweV5KU" />
+
+        <meta-data android:name="com.google.ar.core" android:value="required" />
 
         <activity
             android:name=".MapsActivity"
@@ -44,6 +54,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PaiAR"></activity>
     </application>
 
 </manifest>
