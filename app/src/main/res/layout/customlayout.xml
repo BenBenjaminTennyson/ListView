@@ -4,57 +4,132 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/border_record"
+        android:layout_marginBottom="-10dp"
+        android:background="#555555" />
+
+    <ImageView
+        android:id="@+id/border_record"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_record_working"
+
+        app:srcCompat="@android:color/transparent" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="64dp"
+        android:layout_height="67dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="16dp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="30dp"
         tools:srcCompat="@tools:sample/avatars[2]" />
 
     <TextView
         android:id="@+id/addressLable"
-        android:layout_width="50dp"
+        android:layout_width="85dp"
         android:layout_height="25dp"
         android:layout_alignLeft="@+id/imageView"
-        android:layout_marginLeft="95dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="85dp"
+        android:layout_marginTop="15dp"
+        android:text="Address:"
 
-        android:text="ที่อยู่:"
+        android:textColor="#5E5E5E"
         tools:layout_editor_absoluteX="115dp"
         tools:layout_editor_absoluteY="33dp" />
 
     <TextView
-        android:id="@+id/CreatorLable"
-        android:layout_width="50dp"
+        android:id="@+id/cameraManLable"
+        android:layout_width="85dp"
         android:layout_height="25dp"
         android:layout_alignLeft="@+id/imageView"
-        android:layout_marginLeft="95dp"
-        android:layout_alignBottom="@+id/imageView"
+        android:layout_marginLeft="85dp"
+        android:layout_marginTop="38dp"
+        android:text="Cameraman:"
 
-        android:text="ทำโดย:"
+        android:textColor="#5E5E5E"
         tools:layout_editor_absoluteX="115dp"
         tools:layout_editor_absoluteY="84dp" />
 
     <TextView
-        android:id="@+id/textView_creator"
+        android:id="@+id/builderLable"
+        android:layout_width="85dp"
+        android:layout_height="25dp"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_marginLeft="85dp"
+        android:layout_marginTop="60dp"
+        android:text="Builder:"
+
+        android:textColor="#5E5E5E"
+        tools:layout_editor_absoluteX="115dp"
+        tools:layout_editor_absoluteY="84dp" />
+
+    <TextView
+        android:id="@+id/textView_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/addressLable"
+        android:layout_marginLeft="0dp"
+        android:layout_marginEnd="30dp"
+        android:layout_toEndOf="@+id/addressLable"
+        android:textColor="#5E5E5E"
+        android:maxLines="1"
+        android:lines="1"
         tools:layout_editor_absoluteX="174dp"
         tools:layout_editor_absoluteY="84dp" />
 
         <!--android:layout_alignRight="@+id/CreatorLable"-->
 
     <TextView
-        android:id="@+id/textView_address"
+        android:id="@+id/textView_cameraMan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="150dp"
-        android:layout_alignTop="@+id/CreatorLable"
+        android:layout_alignTop="@+id/cameraManLable"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="29dp"
+        android:layout_toEndOf="@+id/cameraManLable"
+        android:lines="1"
+        android:maxLines="1"
+        android:textColor="#5E5E5E"
+        tools:layout_editor_absoluteX="174dp"
+        tools:layout_editor_absoluteY="33dp" />
+
+    <TextView
+        android:id="@+id/textView_builder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/builderLable"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="29dp"
+        android:layout_toEndOf="@+id/builderLable"
+        android:lines="1"
+        android:maxLines="1"
+        android:textColor="#5E5E5E"
         tools:layout_editor_absoluteX="174dp"
         tools:layout_editor_absoluteY="33dp" />
 

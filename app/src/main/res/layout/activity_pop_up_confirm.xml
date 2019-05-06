@@ -4,39 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_popup"
     tools:context=".PopUpConfirmActivity">
 
     <TextView
-        android:id="@+id/textView_askToDelete"
+        android:id="@+id/textView_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="29dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:text="Are you sure to delete this record?"
         android:textAlignment="center"
+        android:textColor="#E3DC54"
         android:textSize="20sp" />
 
     <Button
         android:id="@+id/btn_Yes"
         android:layout_width="100dp"
-        android:layout_height="69dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="54dp"
         android:layout_marginTop="80dp"
         android:text="OK"
+        android:background="@drawable/conner_round_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_OK"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="110dp"
+        android:background="@drawable/conner_round_button"
+        android:text="OK"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_No"
         android:layout_width="100dp"
-        android:layout_height="69dp"
+        android:layout_height="50dp"
         android:layout_alignTop="@+id/btn_Yes"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="54dp"
         android:text="CANCEL"
+        android:background="@drawable/conner_round_button"
         app:layout_constraintStart_toStartOf="parent" />
 
 </RelativeLayout>

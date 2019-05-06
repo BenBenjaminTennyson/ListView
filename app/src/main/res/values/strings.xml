@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">ListView</string>
 
     <string-array name="sign">
-        <item>Sign</item>
+        <item>Choose Sign</item>
         <item>Work</item>
         <item>Other</item>
         <item>Home</item>
@@ -14,5 +13,7 @@
         <item>Kong</item>
         <item>Arm</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>
