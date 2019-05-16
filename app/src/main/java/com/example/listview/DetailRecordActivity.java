@@ -1,11 +1,13 @@
 package com.example.listview;
 
+import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -90,6 +92,8 @@ public class DetailRecordActivity extends AppCompatActivity {
     private long count = -1;
     private boolean isAddPicture = false;
     private String location;
+    private Date photoDate;
+    private Date buildDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,14 +150,22 @@ public class DetailRecordActivity extends AppCompatActivity {
         btn_date_Photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setFinishDate(btn_date_Photo);
+                try {
+                    setFinishDate(btn_date_Photo,"photo");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         btn_date_Builder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setFinishDate(btn_date_Builder);
+                try {
+                    setFinishDate(btn_date_Builder,"build");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -181,6 +193,11 @@ public class DetailRecordActivity extends AppCompatActivity {
             if (requestCode == PICK_IMAGE) {
                 imageUri = data.getData();
                 btn_pictureLocation.setImageURI(imageUri);
+                Bitmap bitmap = ((BitmapDrawable) btn_pictureLocation.getDrawable()).getBitmap();
+                int sizeBitmap = sizeOf(bitmap);
+                int percentSize = ((int) (1000000000/sizeBitmap));
+                Log.d("size of pic",sizeOf(bitmap)+"");
+                Log.d("percent",percentSize+"");
                 isAddPicture = true;
             } else if (requestCode == REQUEST_MAP) {
                 btn_address.setText(data.getStringExtra("address"));
@@ -196,11 +213,7 @@ public class DetailRecordActivity extends AppCompatActivity {
     }
 
     private void OKActivity() throws ParseException {
-        if("create".equals(state)) verifyRecord();
-        else if ("edit".equals(state)){
-            Log.d("edit","edit action");
-            editRecord();
-        }
+        verifyRecord();
     }
 
     private void closeActivityMain(){
@@ -216,10 +229,9 @@ public class DetailRecordActivity extends AppCompatActivity {
         Date buildDate = new SimpleDateFormat("MM/dd/yyyy").parse(btn_date_Builder.getText().toString());
 
         DataObjectRecord dataObjectRecord = new DataObjectRecord(autoNumber,spinner_worker_Photo.getSelectedItem().toString(),spinner_worker_Build.getSelectedItem().toString(), btn_address.getText().toString(), detail.getText().toString(),spinner_sign.getSelectedItemPosition(),1, calendar.getTime(), photoDate, buildDate, location);
+        dataObjectRecord.addAmountImage(1);
         Bitmap bitmap = ((BitmapDrawable) btn_pictureLocation.getDrawable()).getBitmap();
-//        dataObjectRecord.setPictures_Location(bitmap);
         uploadImage(bitmap,autoNumber, "1");
-//        String primary = record.push().getKey();
         record.child("Record").child(autoNumber).setValue(dataObjectRecord);
 
 //        UploadImage uploadImage = new UploadImage(autoNumber,"1",autoNumber+"1_1.jpg", btn_pictureLocation.getDrawable());
@@ -234,7 +246,8 @@ public class DetailRecordActivity extends AppCompatActivity {
         Date photoDate = new SimpleDateFormat("MM/dd/yyyy").parse(btn_date_Photo.getText().toString());
         Date buildDate = new SimpleDateFormat("MM/dd/yyyy").parse(btn_date_Builder.getText().toString());
 
-        DataObjectRecord dataObjectRecord = new DataObjectRecord(data.getID(),spinner_worker_Photo.getSelectedItem().toString(),spinner_worker_Build.getSelectedItem().toString(), btn_address.getText().toString(), detail.getText().toString(),spinner_sign.getSelectedItemPosition(),1, data.getStartDate(), photoDate, buildDate, data.getLocation());
+        DataObjectRecord dataObjectRecord = new DataObjectRecord(data.getID(),spinner_worker_Photo.getSelectedItem().toString(),spinner_worker_Build.getSelectedItem().toString(), btn_address.getText().toString(), detail.getText().toString(),spinner_sign.getSelectedItemPosition(),1, data.getStartDate(), photoDate, buildDate, location);
+        dataObjectRecord.addAmountImage(1);
         record.child("Record").child(data.getID()).setValue(dataObjectRecord);
 
         Bitmap bitmap = ((BitmapDrawable) btn_pictureLocation.getDrawable()).getBitmap();
@@ -250,21 +263,26 @@ public class DetailRecordActivity extends AppCompatActivity {
     private void verifyRecord() throws ParseException {
 
         if( spinner_sign.getSelectedItemPosition() != 0
-//                && spinner_worker_Photo.getSelectedItemPosition() != 0
-//                && btn_date_Photo.getText().toString() != "-"
-//                && spinner_worker_Build.getSelectedItemPosition() != 0
-//                && btn_date_Builder.getText().toString() != "-"
-//                && isAddPicture
+                && spinner_worker_Photo.getSelectedItemPosition() != 0
+                && btn_date_Photo.getText().toString() != "-"
+                && spinner_worker_Build.getSelectedItemPosition() != 0
+                && btn_date_Builder.getText().toString() != "-"
+                && isAddPicture
         ){
-            createRecord();
+            if("create".equals(state)) createRecord();
+            else if ("edit".equals(state)) editRecord();
         }else{
             Toast.makeText(getApplicationContext(),"Please complete the information", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void uploadImage(Bitmap bitmap, String primaryKey, String status) {
+        int maxSize = 10000000;
+        int sizeBitmap = sizeOf(bitmap);
+        int percentSize = (int) (maxSize*100/sizeBitmap);
+        Log.d("percent",percentSize+"");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, (sizeBitmap>=maxSize) ? 20 : 100, baos);
         byte[] data = baos.toByteArray();
 
         imageRef = storageRef.child(primaryKey+"_"+status+"_0.jpg"); //prepare storage
@@ -299,6 +317,11 @@ public class DetailRecordActivity extends AppCompatActivity {
         btn_address = (Button) findViewById(R.id.button_location);
         detail = (EditText) findViewById(R.id.detail_editText);
         btn_pictureLocation = (ImageButton) findViewById(R.id.Location_imageButton);
+
+        Log.d("image alopha", btn_pictureLocation.getImageAlpha()+"");
+        Log.d("image drawable", btn_pictureLocation.getDrawable()+"");
+//        Log.d("image", btn_pictureLocation.get()+"");
+
 
         record.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -417,6 +440,10 @@ public class DetailRecordActivity extends AppCompatActivity {
                                         Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
                                         btn_pictureLocation.setImageBitmap(bitmap);
 
+                                        if(bitmap != null){
+                                            isAddPicture = true;
+                                        }
+
                                         Log.d("pictureLocation", "picture location is found "+ bitmap.toString());
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -453,23 +480,61 @@ public class DetailRecordActivity extends AppCompatActivity {
         }
     }
 
-    private void setFinishDate(final Button btn_date){
+    private void setFinishDate(final Button btn_date,String type) throws ParseException {
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
         datePickerDialog = new DatePickerDialog(DetailRecordActivity.this,
                 new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        btn_date.setText(day + "/" + (month + 1) + "/" + year);
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+                btn_date.setText(day + "/" + (month + 1) + "/" + year);
+
+                if(btn_date_Photo != null){
+                    try {
+                        photoDate = new SimpleDateFormat("MM/dd/yyyy").parse(btn_date_Photo.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-                }, year, month, day);
+                }
+                if(btn_date_Builder != null){
+                    try {
+                        buildDate = new SimpleDateFormat("MM/dd/yyyy").parse(btn_date_Builder.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Date selectDate = null;
+                try {
+                    selectDate = new SimpleDateFormat("MM/dd/yyyy").parse(btn_date.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if("photo".equals(type) && btn_date_Builder.getText() != ""  && (selectDate.after(buildDate) || selectDate.equals(buildDate))){
+                    Toast.makeText(getApplicationContext(),"camera date is must before build date", Toast.LENGTH_LONG).show();
+                    btn_date_Photo.setText("");
+                }else if("build".equals(type) && btn_date_Photo.getText() != "" && (selectDate.before(photoDate) || selectDate.equals(photoDate))) {
+                    Toast.makeText(getApplicationContext(), "build date is must after camera date", Toast.LENGTH_LONG).show();
+                    btn_date_Builder.setText("");
+                }
+            }}, year, month, day);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
     private void setSpinner() {
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+    protected int sizeOf(Bitmap data) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1) {
+            return data.getRowBytes() * data.getHeight();
+        } else {
+            return data.getByteCount();
+        }
     }
 }

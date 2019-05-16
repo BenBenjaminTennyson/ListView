@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("status",data.getStatus()+"");
         i.putExtra("role",role);
         i.putExtra("location",location);
+        i.putExtra("address",data.getAddress());
         i.putExtra("sign",data.getSignID()+"");
 
         Log.d("sign Home" , data.getSignID()+"");
@@ -335,8 +336,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private Integer setColorRecord(DataObjectRecord record){
-            if(record.getStatus() == 2) return (R.drawable.bg_record_photograph);
-            else if(record.getStatus() == 4) return (R.drawable.bg_record_build);
+            if(record.getStatus() == 2 || (!isManager() && record.getStatus() == 1)) return (R.drawable.bg_record_photograph);
+            else if(record.getStatus() == 4 || record.getStatus() == 3) return (R.drawable.bg_record_build);
             else if(record.getStatus() == 5) return (R.drawable.bg_record_complete);
             return (R.drawable.bg_record_working);
         }

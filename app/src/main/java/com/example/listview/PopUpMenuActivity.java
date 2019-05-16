@@ -80,6 +80,7 @@ public class PopUpMenuActivity extends Activity {
                 i.putExtra("id",getIntent.getStringExtra("id"));
                 i.putExtra("status",getIntent.getStringExtra("status"));
                 i.putExtra("location", getIntent.getStringExtra("location"));
+                i.putExtra("address", getIntent.getStringExtra("address"));
 
                 startActivityForResult(i, (isManager()) ? REQUEST_APPROVE : -1);
             }
@@ -124,6 +125,7 @@ public class PopUpMenuActivity extends Activity {
                     case "null":
                         break;
                     case "1" :
+                        btn_map.setEnabled(false);
                         btn_detail.setText("Edit");
                         break;
                 }

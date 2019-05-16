@@ -24,7 +24,7 @@ public class DataObjectRecord implements Comparable<DataObjectRecord>{
         this.finishCameraDate = finishCameraDate;
         this.finishBuildDate = finishBuildDate;
         this.location = location;
-        this.amountImage = 1;
+        this.amountImage = 0;
     }
 
     public DataObjectRecord() {

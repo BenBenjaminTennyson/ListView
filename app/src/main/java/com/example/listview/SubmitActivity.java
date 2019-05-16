@@ -253,9 +253,9 @@ public class SubmitActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        imageRef = storageRef.child(primaryKey+"_"+status+"_"+count+".jpg"); //prepare storage
+        imageRef = storageRef.child(primaryKey+"_"+status+"_"+count+".jpg");
 
-        UploadTask uploadTask = imageRef.putBytes(data);            //upload image to storage --> images/(primarykey data).jpg
+        UploadTask uploadTask = imageRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception e) {

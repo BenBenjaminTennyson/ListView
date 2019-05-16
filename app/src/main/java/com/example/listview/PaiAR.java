@@ -271,8 +271,7 @@ public class PaiAR extends AppCompatActivity implements View.OnClickListener {
       status = i.getStringExtra("status");
       int sign = Integer.parseInt(i.getStringExtra("sign"))-1;
 
-      if ("3".equals(status)) {
-
+      if("1".equals(status)){
 //          Toast.makeText(this, "Model Stopsign", Toast.LENGTH_SHORT).show();
           int[] models = {R.raw.st3, R.raw.lighttrafic, R.raw.noparking};
 //          modeling = Integer.parseInt(i.getStringExtra("sign"))-1;
@@ -291,7 +290,10 @@ public class PaiAR extends AppCompatActivity implements View.OnClickListener {
                               toast.show();
                               return null;
                           });
-
+      }
+      else if ("3".equals(status)) {
+          Log.d("status", "builder");
+          Log.d("id", id+"");
           FirebaseDatabase database = FirebaseDatabase.getInstance();
           DatabaseReference record = database.getReference();
           bitmaps = new ArrayList<Bitmap>();
@@ -299,11 +301,11 @@ public class PaiAR extends AppCompatActivity implements View.OnClickListener {
           record.child("Record").addListenerForSingleValueEvent(new ValueEventListener() {
               @Override
               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                   for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                       DataObjectRecord data = snapshot.getValue(DataObjectRecord.class);
                       id = i.getStringExtra("id");
-//                    Log.d("ID Searching",id);
+                    Log.d("ID Searching",id);
+                      Log.d("ID data",data.getID()+"");
 
                       if (id.equals(data.getID())) {
                           Log.d("amount image", data.getAmountImage() + "");
@@ -332,12 +334,12 @@ public class PaiAR extends AppCompatActivity implements View.OnClickListener {
                               } catch (IOException e) {
                               }
                           }
-                      }
-//                      if(bitmaps.size() != 0) {
+                          //                      if(bitmaps.size() != 0) {
                           mButton.setVisibility(View.VISIBLE);
                           selectButton.setVisibility(View.VISIBLE);
+                          break;
 //                      }
-                      break;
+                      }
                   }
 
                   record.child("Signs").addListenerForSingleValueEvent(new ValueEventListener() {

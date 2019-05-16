@@ -33,6 +33,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Intent i;
     private String state;
     private String location;
+    private String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         i = getIntent();
         state = i.getStringExtra("state");
         location = i.getStringExtra("location");
+        address = i.getStringExtra("address");
     }
 
     @Override
@@ -79,11 +81,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(13.84,100.43)));
 
-        if("direction".equals(state)){
+//        if("direction".equals(state)){
+        if(location != null && address != null){
             String[] locLag = location.split(",");
             MarkerOptions marker = new MarkerOptions();
             marker.position(new LatLng(Double.parseDouble(locLag[0]),Double.parseDouble(locLag[1])));
             mMap.addMarker(marker);
+            marker.title("location");
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(Double.parseDouble(locLag[0]),Double.parseDouble(locLag[1])), 16));
         }

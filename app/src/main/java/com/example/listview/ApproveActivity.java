@@ -27,6 +27,8 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ApproveActivity extends AppCompatActivity {
 
@@ -46,7 +48,9 @@ public class ApproveActivity extends AppCompatActivity {
     private int numDelete;
     private View convertView;
     private LayoutInflater inflater;
-
+    private int count = 0;
+    private Map<Integer,String> pictures;
+    private ArrayList<View> views;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +58,9 @@ public class ApproveActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         record = database.getReference();
-        bitmaps = new ArrayList<Bitmap>();
+//        bitmaps = new ArrayList<Bitmap>();
+//        pictures = new HashMap<Integer, String>();
+//        views = new ArrayList<>();
 
         i = getIntent();
         id = i.getStringExtra("id");
@@ -78,8 +84,8 @@ public class ApproveActivity extends AppCompatActivity {
                             for (int j = 0; j < data.getAmountImage(); j++) {
                                 if(i == 1 && j > 0) continue;
                                 FirebaseStorage storage = FirebaseStorage.getInstance();
+                                String namePic = i + "_" +j;
                                 Log.d("item:", i + "_" +j);
-//                            Log.d("image",data.getID()+"_"+data.getStatus()+"_"+i+".jpg");
                                 StorageReference storageRef = storage.getReferenceFromUrl("gs://listview-6ed38.appspot.com/images/").child(data.getID() + "_" + i + "_" + j + ".jpg");
                                 try {
                                     final File localFile = File.createTempFile("images", "jpg");
@@ -88,19 +94,25 @@ public class ApproveActivity extends AppCompatActivity {
                                         public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                             Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
 
-                                            Log.d("pictiore firebase", "picture is found :" + bitmap.toString());
+//                                            Log.d("pictiore firebase", "picture is found :" + bitmap.toString());
 
 //                                            bitmaps.add(bitmap);
 
                                             if(bitmap != null){
                                                 View convertView = inflater.inflate(R.layout.image_approve, linearLayout, false);
                                                 ImageView img = convertView.findViewById(R.id.ivGallery);
-
                                                 img.setImageBitmap(bitmap);
 //                                                img.setImageResource(R.mipmap.ic_launcher_round);
-                                                linearLayout.addView(convertView);
+                                                linearLayout.addView(convertView,count);
 
-                                                Log.d("image bitmap", img.getDrawable().toString());
+//                                                pictures.put(count,linearLayout.getChildAt(count)+"");
+//                                                views.add(count,convertView);
+//                                                Log.d("Linear View",linearLayout.getChildAt(count)+"");
+
+//                                                Log.d("index",count+"");
+//                                                Log.d("count", namePic);
+//                                                Log.d("image bitmap", img.getDrawable().toString());
+                                                count++;
                                             }
 
                                         }
@@ -112,11 +124,8 @@ public class ApproveActivity extends AppCompatActivity {
                                     });
                                 } catch (IOException e) {
                                 }
-//                                Log.d("BITMAP LIST in loop:", bitmaps.size() + "");
                             }
                         }
-//                        Log.d("BITMAP LIST out loop:",bitmaps.size()+"");
-//                        Log.d("BITMAP LIST out loop:",bitmaps.size()+"");
                         break;
                     }
                 }
@@ -127,7 +136,7 @@ public class ApproveActivity extends AppCompatActivity {
             }
         });
 
-        Log.d("BITMAP LIST last:",bitmaps.size()+"");
+//        Log.d("BITMAP LIST last:",bitmaps.size()+"");
 
         btn_approve =  (Button) findViewById(R.id.btn_approve);
         btn_reject =  (Button) findViewById(R.id.btn_reject);
@@ -209,7 +218,7 @@ public class ApproveActivity extends AppCompatActivity {
 
     private void changeStatus(final int result, int numDelete){
         DataObjectRecord dataObjectRecord = new DataObjectRecord(data.getID(),data.getEmployeeCameraID(),data.getEmployeeBuildID(), data.getAddress(),data.getDetailObject(),data.getSignID(),data.getStatus() + result, data.getStartDate(), data.getFinishCameraDate(), data.getFinishBuildDate(),data.getLocation());
-        dataObjectRecord.addAmountImage(-numDelete);
+        dataObjectRecord.addAmountImage(data.getAmountImage()-numDelete);
         record.child("Record").child(id).setValue(dataObjectRecord);
 
         Intent intent = new Intent();
